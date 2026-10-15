@@ -6,8 +6,14 @@
 # else:
 #     print("Raja is Taller") pgm 1
 
-Total = float(input("Enter total purchase amount:"))
-if total >= 1000:
-    discount = total*0.10
-    final amount = total
+  
+total = float(input("Enter total purchase amount:"))
 
+if total >= 1000:
+    discount = total * 0.10
+    final_amount = total - discount
+    print("Discount applied:", discount)
+    print("Final amount to pay:", final_amount)
+else:
+    print("No discount applied")
+    print("Total amount:", total)
