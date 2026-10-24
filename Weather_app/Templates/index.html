@@ -1,0 +1,268 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Report</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            padding: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            color: white;
+            background: linear-gradient(135deg, #101c3c, #245b87, #57a6c8);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 650px;
+            padding: 35px;
+            text-align: center;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.13);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            color: #e0edff;
+            line-height: 1.6;
+            margin-bottom: 26px;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .search-form input {
+            flex: 1;
+            min-width: 0;
+            padding: 14px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            outline: none;
+        }
+
+        .search-form input:focus {
+            box-shadow: 0 0 0 3px #93c5fd;
+        }
+
+        .search-form button {
+            padding: 14px 18px;
+            border: none;
+            border-radius: 10px;
+            background: #ffcf70;
+            color: #182a46;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .search-form button:hover {
+            background: #ffe1a3;
+        }
+
+        .error {
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            background: rgba(180, 25, 25, 0.35);
+        }
+
+        .location h2 {
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        .time, .feels, .detail-card p {
+            color: #dceaff;
+        }
+
+        .temperature {
+            font-size: 58px;
+            font-weight: bold;
+            margin: 20px 0 8px;
+        }
+
+        .condition {
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .feels {
+            margin-bottom: 25px;
+        }
+
+        .details {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 20px;
+        }
+
+        .detail-card {
+            padding: 20px 10px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.13);
+        }
+
+        .detail-card span {
+            font-size: 28px;
+        }
+
+        .detail-card p {
+            margin: 10px 0;
+        }
+
+        .detail-card h3 {
+            font-size: 20px;
+        }
+
+        .welcome {
+            padding: 25px 5px;
+        }
+
+        .welcome h2 {
+            margin-bottom: 10px;
+        }
+
+        .welcome p {
+            color: #dceaff;
+            line-height: 1.6;
+        }
+
+        footer {
+            margin-top: 28px;
+            font-size: 12px;
+            color: #dceaff;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px 16px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            .search-form {
+                flex-direction: column;
+            }
+
+            .search-form button {
+                width: 100%;
+            }
+
+            .temperature {
+                font-size: 46px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <div class="icon">🌤️</div>
+        <h1>Weather Report</h1>
+        <p class="subtitle">
+            Discover the current weather in any city around the world.
+        </p>
+
+        <form method="POST" class="search-form">
+            <input
+                type="text"
+                name="city"
+                placeholder="Enter city name..."
+                value="{{ city }}"
+                aria-label="City name"
+                required
+            >
+            <button type="submit">Get Weather</button>
+        </form>
+
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        {% if weather %}
+            <section class="weather-report">
+                <div class="location">
+                    <h2>{{ weather.city }}</h2>
+                    <p class="time">Local time: {{ weather.time }}</p>
+                </div>
+
+                <div class="temperature">
+                    {{ weather.temperature }}°C
+                </div>
+
+                <p class="condition">{{ weather.condition }}</p>
+
+                <p class="feels">
+                    Feels like {{ weather.feels_like }}°C
+                </p>
+
+                <div class="details">
+                    <div class="detail-card">
+                        <span>💧</span>
+                        <p>Humidity</p>
+                        <h3>{{ weather.humidity }}%</h3>
+                    </div>
+
+                    <div class="detail-card">
+                        <span>💨</span>
+                        <p>Wind Speed</p>
+                        <h3>{{ weather.wind }} km/h</h3>
+                    </div>
+
+                    <div class="detail-card">
+                        <span>🌧️</span>
+                        <p>Precipitation</p>
+                        <h3>{{ weather.precipitation }} mm</h3>
+                    </div>
+
+                    <div class="detail-card">
+                        <span>🌡️</span>
+                        <p>Feels Like</p>
+                        <h3>{{ weather.feels_like }}°C</h3>
+                    </div>
+                </div>
+            </section>
+        {% else %}
+            <section class="welcome">
+                <h2>Check Your City's Weather</h2>
+                <p>
+                    Enter a city name to view its current temperature,
+                    humidity, wind speed and weather conditions.
+                </p>
+            </section>
+        {% endif %}
+
+        <footer>Weather data powered by Open-Meteo</footer>
+    </main>
+</body>
+</html>
